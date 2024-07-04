@@ -42,8 +42,8 @@ class PostResource extends Resource
                     ->description('create new post.')
                     ->collapsible()
                     ->schema([
-                        TextInput::make('title')->required(),
-                        TextInput::make('slug')->required(),
+                        TextInput::make('title')->rules(['min:3'])->required(),
+                        TextInput::make('slug')->unique(ignoreRecord: true)->required(),
                         Select::make('category_id')
                             ->label('Categories')
                             ->options(Category::all()->pluck('name', 'id')),
@@ -69,20 +69,39 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('thumbnail'),
-                ColorColumn::make('color'),
-                TextColumn::make('title'),
-                TextColumn::make('slug'),
-                TextColumn::make('category.name'),
+                TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault:true),
+                ImageColumn::make('thumbnail')
+                    ->toggleable(),
+                ColorColumn::make('color')
+                    ->toggleable(),
+                TextColumn::make('title')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('slug')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('category.name')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
 
-                TextColumn::make('tags'),
+                TextColumn::make('tags')
+                    ->toggleable(),
                 CheckboxColumn::make('published'),
+                TextColumn::make('created_at')->datetime()
+                    ->label('Published on')
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

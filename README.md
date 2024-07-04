@@ -31,3 +31,7 @@ php artisan make:filament-user
 ```
 
 Open /admin in your web browser, sign in, and start building your app!
+
+- We can change menu icons from heroicons
+
+https://heroicons.com/
