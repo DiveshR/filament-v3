@@ -46,7 +46,10 @@ class PostResource extends Resource
                         TextInput::make('slug')->unique(ignoreRecord: true)->required(),
                         Select::make('category_id')
                             ->label('Categories')
-                            ->options(Category::all()->pluck('name', 'id')),
+                            // ->multiple()
+                            // ->options(Category::all()->pluck('name', 'id')),
+                            ->relationship('category','name')
+                            ->required(),
                         ColorPicker::make('color')->required(),
                         MarkdownEditor::make('content')->columnSpanFull(),
                     ])->columnSpan(1)->columns(2),

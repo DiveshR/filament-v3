@@ -35,3 +35,33 @@ Open /admin in your web browser, sign in, and start building your app!
 - We can change menu icons from heroicons
 
 - https://heroicons.com/
+
+### Relationship
+
+Instead of
+->options(Category::all()->pluck('name', 'id')), in Category Resource
+
+We can use 
+ ->relationship('category','name')
+
+### To show a lists of posts of in single cateory using  Realationship manager
+
+https://filamentphp.com/docs/3.x/panels/resources/relation-managers
+
+php artisan make:filament-relation-manager CategoryResource posts title
+
+- ```CategoryResource``` is the name of the resource class for the owner (parent) model.
+- ```posts``` is the name of the relationship you want to manage.
+- ```title``` is the name of the attribute that will be used to identify posts.
+
+Include relational manger file inside getRelations in resource file which is CategoryResource file in our case.
+
+```
+    public static function getRelations(): array
+    {
+        return [
+            PostsRelationManager::class,
+        ];
+    }
+```
+
